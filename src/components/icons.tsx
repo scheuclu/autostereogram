@@ -1,0 +1,108 @@
+import type { PresetId } from '../lib/depth'
+
+const base = {
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 1.6,
+  strokeLinecap: 'round',
+  strokeLinejoin: 'round',
+} as const
+
+export function EyeLogo({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={2}>
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  )
+}
+
+export function ShuffleIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={2}>
+      <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
+      <path d="M21 3v5h-5" />
+      <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+      <path d="M3 21v-5h5" />
+    </svg>
+  )
+}
+
+export function MaximizeIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={2}>
+      <path d="M15 3h6v6" />
+      <path d="m21 3-7 7" />
+      <path d="m3 21 7-7" />
+      <path d="M9 21H3v-6" />
+    </svg>
+  )
+}
+
+export function MinimizeIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={2}>
+      <path d="M4 14h6v6" />
+      <path d="m10 14-7 7" />
+      <path d="M20 10h-6V4" />
+      <path d="m14 10 7-7" />
+    </svg>
+  )
+}
+
+export function DownloadIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={2}>
+      <path d="M12 3v12" />
+      <path d="m7 10 5 5 5-5" />
+      <path d="M5 21h14" />
+    </svg>
+  )
+}
+
+export function PresetIcon({ id, className }: { id: PresetId; className?: string }) {
+  switch (id) {
+    case 'sphere':
+      return (
+        <svg viewBox="0 0 20 20" className={className} {...base}>
+          <circle cx="10" cy="10" r="7" />
+          <path d="M10 3a10.5 10.5 0 0 1 0 14M10 3a10.5 10.5 0 0 0 0 14" opacity="0.5" />
+        </svg>
+      )
+    case 'ring':
+      return (
+        <svg viewBox="0 0 20 20" className={className} {...base}>
+          <circle cx="10" cy="10" r="7" />
+          <circle cx="10" cy="10" r="3" />
+        </svg>
+      )
+    case 'ripples':
+      return (
+        <svg viewBox="0 0 20 20" className={className} {...base}>
+          <circle cx="10" cy="10" r="2" />
+          <circle cx="10" cy="10" r="5" opacity="0.7" />
+          <circle cx="10" cy="10" r="8" opacity="0.4" />
+        </svg>
+      )
+    case 'hills':
+      return (
+        <svg viewBox="0 0 20 20" className={className} {...base}>
+          <path d="M1 16c3 0 3.5-8 7-8s3 5 5 5 2.5-3 6-3" />
+        </svg>
+      )
+    case 'text':
+      return (
+        <svg viewBox="0 0 20 20" className={className} {...base}>
+          <path d="M4 6V4h12v2M10 4v12M7.5 16h5" />
+        </svg>
+      )
+    case 'image':
+      return (
+        <svg viewBox="0 0 20 20" className={className} {...base}>
+          <rect x="2.5" y="3.5" width="15" height="13" rx="2" />
+          <circle cx="7" cy="8" r="1.4" />
+          <path d="m4 14 4-4 3 3 3-3 3.5 3.5" />
+        </svg>
+      )
+  }
+}
