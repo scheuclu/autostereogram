@@ -1,7 +1,9 @@
-# Stereogram Studio
+# autostereogram.lol
 
 A little web app for making autostereograms ("Magic Eye" images) — single-image
 random-dot stereograms that hide a 3D shape you can see by relaxing your eyes.
+
+**Live at [autostereogram.lol](https://autostereogram.lol)**
 
 ## Features
 

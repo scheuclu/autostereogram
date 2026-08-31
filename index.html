@@ -4,7 +4,51 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#09090b" />
-    <title>Stereogram Studio</title>
+    <title>autostereogram.lol — Free Magic Eye Generator</title>
+    <meta
+      name="description"
+      content="Make your own autostereograms (Magic Eye images) right in your browser. Hide 3D shapes, text, or your own photos inside colorful dot patterns — free, no signup, instant PNG download."
+    />
+    <link rel="canonical" href="https://autostereogram.lol/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://autostereogram.lol/" />
+    <meta property="og:site_name" content="autostereogram.lol" />
+    <meta property="og:title" content="autostereogram.lol — Free Magic Eye Generator" />
+    <meta
+      property="og:description"
+      content="Hide 3D shapes, text, or your own photos inside colorful dot patterns. Free, in your browser, instant PNG download. There's a word hidden in this preview image — can you see it?"
+    />
+    <meta property="og:image" content="https://autostereogram.lol/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A colorful autostereogram with a word hidden in 3D" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="autostereogram.lol — Free Magic Eye Generator" />
+    <meta
+      name="twitter:description"
+      content="Hide 3D shapes, text, or your own photos inside colorful dot patterns. Free, in your browser, instant PNG download."
+    />
+    <meta name="twitter:image" content="https://autostereogram.lol/og.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "autostereogram.lol",
+        "url": "https://autostereogram.lol/",
+        "description": "Free in-browser generator for autostereograms (Magic Eye images). Hide 3D shapes, text, or your own photos inside colorful dot patterns and download them as PNG.",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='none' stroke='white' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='white'/%3E%3C/svg%3E"
@@ -18,6 +62,15 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <h1>autostereogram.lol — Free Magic Eye Generator</h1>
+      <p>
+        autostereogram.lol is a free in-browser generator for autostereograms — single-image
+        random-dot stereograms, popularized in the 1990s as "Magic Eye" pictures. Hide 3D shapes,
+        custom text, or your own photos inside colorful dot patterns and download the result as a
+        PNG. JavaScript is required to generate images.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

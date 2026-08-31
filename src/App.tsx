@@ -129,7 +129,7 @@ export default function App() {
       if (!blob) return
       const a = document.createElement('a')
       a.href = URL.createObjectURL(blob)
-      a.download = `stereogram-${preset}.png`
+      a.download = `autostereogram-${preset}.png`
       a.click()
       setTimeout(() => URL.revokeObjectURL(a.href), 1000)
     }, 'image/png')
@@ -159,8 +159,8 @@ export default function App() {
             <EyeLogo className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-sm font-semibold tracking-tight text-white">Stereogram Studio</h1>
-            <p className="text-xs text-zinc-500">hide 3D shapes in plain sight</p>
+            <h1 className="text-sm font-semibold tracking-tight text-white">autostereogram.lol</h1>
+            <p className="text-xs text-zinc-500">free Magic Eye maker — hide 3D in plain sight</p>
           </div>
         </div>
       </header>
@@ -349,6 +349,42 @@ export default function App() {
               </p>
             </div>
           </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+            <h2 className="mb-2 text-sm font-semibold text-white">What is an autostereogram?</h2>
+            <div className="space-y-3 text-sm text-zinc-400">
+              <p>
+                An autostereogram is a single 2D image that hides a 3D scene in plain sight —
+                popularized in the 1990s by the &ldquo;Magic Eye&rdquo; books. The depth is encoded
+                in subtle horizontal repetitions of the pattern: when you let each eye lock onto a
+                different repeat, your brain fuses them and the hidden shape floats out of the
+                noise. No glasses, no special hardware — just your own stereo vision.
+              </p>
+              <p>
+                This generator builds single-image random-dot stereograms (SIRDS) using the classic
+                Thimbleby–Inglis–Witten algorithm, entirely in your browser. Pick a built-in depth
+                map, type your own text, or upload a photo, then download the result as a PNG and
+                share it. It&rsquo;s free, with no signup and no uploads — your images never leave
+                your device.
+              </p>
+            </div>
+          </div>
+
+          <footer className="pb-2 text-center text-xs text-zinc-600">
+            <a
+              href="https://autostereogram.lol"
+              className="transition-colors hover:text-zinc-400"
+            >
+              autostereogram.lol
+            </a>
+            {' · '}
+            <a
+              href="https://github.com/scheuclu/autostereogram"
+              className="transition-colors hover:text-zinc-400"
+            >
+              open source on GitHub
+            </a>
+          </footer>
         </section>
       </main>
     </div>
