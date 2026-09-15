@@ -7,7 +7,7 @@ random-dot stereograms that hide a 3D shape you can see by relaxing your eyes.
 
 ## Features
 
-- Preset depth maps (sphere, ring, ripples, hills), custom text, or your own image
+- Preset depth maps (disc, ring, bullseye, blobs), custom text, or your own image
 - Color palettes, adjustable dot size, depth strength, and eye separation
 - Hidden-surface removal for clean edges (Thimbleby–Inglis–Witten algorithm)
 - Focus dots to help you lock in the 3D effect

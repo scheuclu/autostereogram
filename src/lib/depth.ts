@@ -1,13 +1,13 @@
 import { hash3 } from './prng'
 import type { DepthField } from './stereogram'
 
-export type PresetId = 'sphere' | 'ring' | 'ripples' | 'hills' | 'text' | 'image'
+export type PresetId = 'disc' | 'ring' | 'bullseye' | 'blobs' | 'text' | 'image'
 
 export const PRESETS: { id: PresetId; label: string }[] = [
-  { id: 'sphere', label: 'Sphere' },
+  { id: 'disc', label: 'Disc' },
   { id: 'ring', label: 'Ring' },
-  { id: 'ripples', label: 'Ripples' },
-  { id: 'hills', label: 'Hills' },
+  { id: 'bullseye', label: 'Bullseye' },
+  { id: 'blobs', label: 'Blobs' },
   { id: 'text', label: 'Text' },
   { id: 'image', label: 'Image' },
 ]
@@ -19,19 +19,19 @@ export interface DepthSources {
 
 export function buildDepth(preset: PresetId, w: number, h: number, src: DepthSources): DepthField {
   switch (preset) {
-    case 'sphere':
-      return sphere(w, h)
+    case 'disc':
+      return disc(w, h)
     case 'ring':
       return ring(w, h)
-    case 'ripples':
-      return ripples(w, h)
-    case 'hills':
-      return hills(w, h)
+    case 'bullseye':
+      return bullseye(w, h)
+    case 'blobs':
+      return blobs(w, h)
     case 'text':
       return text(w, h, src.text)
     case 'image':
-      // Fall back to the sphere until an image has been chosen.
-      return src.image ? fromImage(w, h, src.image) : sphere(w, h)
+      // Fall back to the disc until an image has been chosen.
+      return src.image ? fromImage(w, h, src.image) : disc(w, h)
   }
 }
 
@@ -39,17 +39,21 @@ function field(w: number, h: number): DepthField {
   return { data: new Float32Array(w * h), w, h }
 }
 
-function sphere(w: number, h: number): DepthField {
+// The built-in shapes are strictly two-level (0 = background, 1 = shape) with
+// hard edges: a flat cutout floating in front of a flat wall. Soft gradients
+// smear the stereo separation across many pixels, which blurs the silhouette
+// and makes the shape harder to fuse than a crisp step does.
+
+function disc(w: number, h: number): DepthField {
   const f = field(w, h)
   const cx = w / 2
   const cy = h / 2
-  const R = Math.min(w, h) * 0.38
+  const R2 = (Math.min(w, h) * 0.34) ** 2
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
-      const dx = (x - cx) / R
-      const dy = (y - cy) / R
-      const rr = dx * dx + dy * dy
-      if (rr < 1) f.data[y * w + x] = Math.sqrt(1 - rr)
+      const dx = x - cx
+      const dy = y - cy
+      if (dx * dx + dy * dy < R2) f.data[y * w + x] = 1
     }
   }
   return f
@@ -60,60 +64,57 @@ function ring(w: number, h: number): DepthField {
   const cx = w / 2
   const cy = h / 2
   const m = Math.min(w, h)
-  const R = m * 0.3
-  const tube = m * 0.13
+  const inner = m * 0.2
+  const outer = m * 0.36
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
-      const d = Math.abs(Math.hypot(x - cx, y - cy) - R) / tube
-      if (d < 1) f.data[y * w + x] = Math.sqrt(1 - d * d)
+      const r = Math.hypot(x - cx, y - cy)
+      if (r >= inner && r < outer) f.data[y * w + x] = 1
     }
   }
   return f
 }
 
-function ripples(w: number, h: number): DepthField {
+function bullseye(w: number, h: number): DepthField {
   const f = field(w, h)
   const cx = w / 2
   const cy = h / 2
   const m = Math.min(w, h)
-  const k = (2 * Math.PI) / (m / 4.5)
+  const band = m * 0.075
+  const limit = m * 0.45
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       const r = Math.hypot(x - cx, y - cy)
-      const env = Math.max(0, 1 - r / (m * 0.52))
-      f.data[y * w + x] = env * (0.5 + 0.5 * Math.cos(r * k))
+      if (r < limit && ((r / band) | 0) % 2 === 0) f.data[y * w + x] = 1
     }
   }
   return f
 }
 
-function hills(w: number, h: number): DepthField {
+function blobs(w: number, h: number): DepthField {
   const f = field(w, h)
   const m = Math.min(w, h)
-  const blobs: { x: number; y: number; s2: number; a: number }[] = []
+  const discs: { x: number; y: number; r2: number }[] = []
   for (let i = 0; i < 6; i++) {
-    const s = m * (0.1 + 0.14 * hash3(i, 3, 99))
-    blobs.push({
-      x: w * (0.12 + 0.76 * hash3(i, 1, 99)),
-      y: h * (0.15 + 0.7 * hash3(i, 2, 99)),
-      s2: 2 * s * s,
-      a: 0.45 + 0.55 * hash3(i, 4, 99),
+    const r = m * (0.08 + 0.11 * hash3(i, 3, 99))
+    discs.push({
+      x: w * (0.14 + 0.72 * hash3(i, 1, 99)),
+      y: h * (0.16 + 0.68 * hash3(i, 2, 99)),
+      r2: r * r,
     })
   }
-  let max = 0
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
-      let z = 0
-      for (const b of blobs) {
-        const dx = x - b.x
-        const dy = y - b.y
-        z += b.a * Math.exp(-(dx * dx + dy * dy) / b.s2)
+      for (const d of discs) {
+        const dx = x - d.x
+        const dy = y - d.y
+        if (dx * dx + dy * dy < d.r2) {
+          f.data[y * w + x] = 1
+          break
+        }
       }
-      f.data[y * w + x] = z
-      if (z > max) max = z
     }
   }
-  if (max > 0) for (let i = 0; i < f.data.length; i++) f.data[i] = Math.min(1, f.data[i] / max)
   return f
 }
 
@@ -137,10 +138,10 @@ function text(w: number, h: number, str: string): DepthField {
   ctx.fillStyle = '#fff'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
-  ctx.filter = 'blur(1.5px)'
   ctx.fillText(s, w / 2, h / 2)
   const data = ctx.getImageData(0, 0, w, h).data
-  for (let i = 0; i < w * h; i++) f.data[i] = data[i * 4] / 255
+  // Threshold so the glyphs' antialiased edges become hard steps too.
+  for (let i = 0; i < w * h; i++) f.data[i] = data[i * 4] > 127 ? 1 : 0
   return f
 }
 

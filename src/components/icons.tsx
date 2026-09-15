@@ -62,32 +62,39 @@ export function DownloadIcon({ className }: { className?: string }) {
 
 export function PresetIcon({ id, className }: { id: PresetId; className?: string }) {
   switch (id) {
-    case 'sphere':
+    case 'disc':
       return (
         <svg viewBox="0 0 20 20" className={className} {...base}>
-          <circle cx="10" cy="10" r="7" />
-          <path d="M10 3a10.5 10.5 0 0 1 0 14M10 3a10.5 10.5 0 0 0 0 14" opacity="0.5" />
+          <circle cx="10" cy="10" r="7" fill="currentColor" stroke="none" />
         </svg>
       )
     case 'ring':
       return (
         <svg viewBox="0 0 20 20" className={className} {...base}>
-          <circle cx="10" cy="10" r="7" />
-          <circle cx="10" cy="10" r="3" />
+          <path
+            d="M10 3a7 7 0 1 0 0 14 7 7 0 1 0 0-14Zm0 4a3 3 0 1 1 0 6 3 3 0 1 1 0-6Z"
+            fill="currentColor"
+            stroke="none"
+          />
         </svg>
       )
-    case 'ripples':
+    case 'bullseye':
       return (
         <svg viewBox="0 0 20 20" className={className} {...base}>
-          <circle cx="10" cy="10" r="2" />
-          <circle cx="10" cy="10" r="5" opacity="0.7" />
-          <circle cx="10" cy="10" r="8" opacity="0.4" />
+          <path
+            d="M10 2a8 8 0 1 0 0 16 8 8 0 1 0 0-16Zm0 2.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 1 1 0-11Z"
+            fill="currentColor"
+            stroke="none"
+          />
+          <circle cx="10" cy="10" r="3" fill="currentColor" stroke="none" />
         </svg>
       )
-    case 'hills':
+    case 'blobs':
       return (
         <svg viewBox="0 0 20 20" className={className} {...base}>
-          <path d="M1 16c3 0 3.5-8 7-8s3 5 5 5 2.5-3 6-3" />
+          <circle cx="7" cy="7" r="4.5" fill="currentColor" stroke="none" />
+          <circle cx="14" cy="13" r="3.5" fill="currentColor" stroke="none" />
+          <circle cx="15" cy="5" r="2" fill="currentColor" stroke="none" />
         </svg>
       )
     case 'text':
