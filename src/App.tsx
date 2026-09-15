@@ -26,7 +26,7 @@ const SIZE_OPTIONS = (Object.keys(SIZES) as SizeId[]).map((id) => ({
 }))
 
 export default function App() {
-  const [preset, setPreset] = useState<PresetId>('sphere')
+  const [preset, setPreset] = useState<PresetId>('disc')
   const [text, setText] = useState('HELLO')
   const [image, setImage] = useState<ImageBitmap | null>(null)
   const [imageName, setImageName] = useState<string | null>(null)
@@ -210,7 +210,7 @@ export default function App() {
                   <p className="truncate text-xs text-zinc-500">
                     {imageName
                       ? imageName
-                      : 'Bright areas pop out, dark areas recede. Showing a sphere until you pick one.'}
+                      : 'Bright areas pop out, dark areas recede. Showing the disc until you pick one.'}
                   </p>
                   <input
                     ref={fileRef}
